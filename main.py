@@ -21,7 +21,13 @@ PATH_TO_WRITE = f'{directory}/data/result'
 # Файл для хранения ИНН и названий компаний.
 file_settings = 'Settings.xlsx'
 
-# Файл для записи компаний с суммарным рейтингом за последний отчетный период > 27
+# Кол-во баллов, допустимых для дальнейшего анализа
+score_success = 27
+
+# Если файл загружен с сайта налоговой, то True (преобразование текстового формата в цифровой
+nalog = False
+
+# Файл для записи компаний с суммарным рейтингом за последний отчетный период > score_success
 file_success = f'{PATH_TO_WRITE}/!success.txt'
 
 # Анализируемые годы
@@ -62,7 +68,8 @@ def main():
             continue
 
         # Преобразование данных в цифровой формат
-        balance = str_to_int(balance, period)
+        if nalog:
+            balance = str_to_int(balance, period)
 
         # Датафрейм для финансовых коэффициентов
         koef_df = pd.DataFrame(columns=['Наименование',
@@ -181,8 +188,8 @@ def main():
         # Суммарный балл за период
         result = sum_years(koef_df, period)
 
-        # Если сумма баллов за последний период больше 27, то записываем компанию в файл
-        if result[period[2]] > 27:
+        # Если сумма баллов за последний период больше score_success, то записываем компанию в файл
+        if result[period[2]] > score_success:
             info = f'{list_company[inn]};{file}'
             write_success(info)
 
