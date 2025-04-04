@@ -18,6 +18,12 @@ directory = os.path.dirname(os.path.realpath("__file__"))
 PATH = f'{directory}/data/new/'
 PATH_TO_WRITE = f'{directory}/data/result'
 
+# Создаем директории, если они не существуют
+os.makedirs(PATH, exist_ok=True)
+os.makedirs(PATH_TO_WRITE, exist_ok=True)
+os.makedirs(f'{directory}/data/checked ', exist_ok=True) # Директория для проверенных файлов
+os.makedirs(f'{directory}/data/err', exist_ok=True) # Директория для файлов с ошибками
+
 # Файл для хранения ИНН и названий компаний.
 file_settings = 'Settings.xlsx'
 
@@ -25,7 +31,7 @@ file_settings = 'Settings.xlsx'
 score_success = 27
 
 # Если файл загружен с сайта налоговой, то True (преобразование текстового формата в цифровой
-nalog = False
+nalog = True
 
 # Файл для записи компаний с суммарным рейтингом за последний отчетный период > score_success
 file_success = f'{PATH_TO_WRITE}/!success.txt'
